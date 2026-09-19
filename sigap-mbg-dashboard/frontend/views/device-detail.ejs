@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h1>SIGAP MBG</h1>
+        <span class="nav-subtitle">Food Freshness Monitoring</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="/overview">Overview</a></li>
+        <li><a href="/alerts">Alerts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <a href="/overview" class="back-link">&larr; Back to Overview</a>
+        <h2 id="device-title">Device: <%= device_id %></h2>
+        <p id="device-location" class="text-muted">Loading...</p>
+      </div>
+      <div id="device-status-badge" class="status-badge">-</div>
+    </div>
+
+    <div id="loading" class="loading">Loading device data...</div>
+    <div id="error" class="error-message" style="display: none;"></div>
+
+    <!-- Latest Reading Card -->
+    <div id="latest-reading" class="card" style="display: none;">
+      <h3>Status Terkini</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Prediction</span>
+          <span id="latest-prediction" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Confidence</span>
+          <span id="latest-confidence" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Temperature</span>
+          <span id="latest-temp" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Humidity</span>
+          <span id="latest-humidity" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">MQ-135 (mean)</span>
+          <span id="latest-mq135" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">MQ-136 (mean)</span>
+          <span id="latest-mq136" class="stat-value">-</span>
+        </div>
+      </div>
+      <p class="text-muted">Last update: <span id="latest-timestamp">-</span></p>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-container" style="display: none;" id="charts-container">
+      <div class="card">
+        <h3>Sensor Gas Trends</h3>
+        <canvas id="gas-chart"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Temperature & Humidity Trends</h3>
+        <canvas id="env-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Reading History Table -->
+    <div class="card" style="display: none;" id="history-container">
+      <h3>Riwayat Pembacaan</h3>
+      <div class="table-container">
+        <table id="readings-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Prediction</th>
+              <th>Confidence</th>
+              <th>MQ-135</th>
+              <th>MQ-136</th>
+              <th>Temp (°C)</th>
+              <th>Humidity (%)</th>
+            </tr>
+          </thead>
+          <tbody id="readings-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="last-update">
+      Last updated: <span id="last-update-time">-</span>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 PKM-KC SIGAP MBG - Universitas Brawijaya</p>
+  </footer>
+
+  <script>
+    const DEVICE_ID = '<%= device_id %>';
+  </script>
+  <script src="/js/device-detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h1>SIGAP MBG</h1>
+        <span class="nav-subtitle">Food Freshness Monitoring</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="/overview" class="active">Overview</a></li>
+        <li><a href="/alerts">Alerts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h2>Device Overview</h2>
+      <p class="text-muted">Monitoring semua unit SIGAP MBG</p>
+    </div>
+
+    <div id="loading" class="loading">Loading devices...</div>
+    <div id="error" class="error-message" style="display: none;"></div>
+    
+    <div id="devices-grid" class="devices-grid">
+      <!-- Device cards will be inserted here by JavaScript -->
+    </div>
+
+    <div class="last-update">
+      Last updated: <span id="last-update-time">-</span>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 PKM-KC SIGAP MBG - Universitas Brawijaya</p>
+  </footer>
+
+  <script src="/js/overview.js"></script>
+</body>
+</html>
