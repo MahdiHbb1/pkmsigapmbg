@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h1>SIGAP MBG</h1>
+        <span class="nav-subtitle">Food Freshness Monitoring</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="/overview">Overview</a></li>
+        <li><a href="/alerts" class="active">Alerts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h2>Critical Alerts</h2>
+      <p class="text-muted">Status "Perlu Diperiksa" dan "Tidak Layak"</p>
+    </div>
+
+    <div class="filter-bar">
+      <label>
+        Filter Status:
+        <select id="status-filter">
+          <option value="">All Alerts</option>
+          <option value="Tidak Layak">Tidak Layak</option>
+          <option value="Perlu Diperiksa">Perlu Diperiksa</option>
+        </select>
+      </label>
+      <label>
+        Limit:
+        <select id="limit-filter">
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="loading" class="loading">Loading alerts...</div>
+    <div id="error" class="error-message" style="display: none;"></div>
+    
+    <div id="alerts-container" class="alerts-list" style="display: none;">
+      <!-- Alert items will be inserted here by JavaScript -->
+    </div>
+
+    <div id="no-alerts" class="no-data" style="display: none;">
+      <p>Tidak ada alert untuk kriteria yang dipilih.</p>
+    </div>
+
+    <div class="last-update">
+      Last updated: <span id="last-update-time">-</span>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 PKM-KC SIGAP MBG - Universitas Negeri Semarang</p>
+  </footer>
+
+  <script src="/js/alerts.js"></script>
+</body>
+</html>
