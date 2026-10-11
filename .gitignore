@@ -8,7 +8,11 @@ package-lock.json
 # Environment variables
 .env
 .env.*
+*.env
 !.env.example
+
+# Firmware secrets
+firmware/esp32/secrets.h
 
 # Python
 __pycache__/
