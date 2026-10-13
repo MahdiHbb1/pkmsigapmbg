@@ -26,6 +26,10 @@ venv/
 ENV/
 env/
 .ipynb_checkpoints/
+*.egg-info/
+.pytest_cache/
+dist/
+build/
 
 # IDE
 .vscode/
@@ -61,3 +65,13 @@ backup/
 tmp/
 temp/
 *.tmp
+temp_*
+test-payload*.json
+
+# Test files
+*.test.log
+*_test.log
+
+# OpenCode IDE (local project settings)
+.opencode/
+.specify/

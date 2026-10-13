@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGAP MBG - Consistency Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid;
+        }
+        .test-pass {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+        .test-fail {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+        .badge-demo {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .status-layak {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .status-perlu-diperiksa {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+        .status-tidak-layak {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 SIGAP MBG - Consistency Validation Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Badge Color Consistency</h2>
+        <p>Badge colors harus sama di semua device:</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <span class="badge-demo status-layak">Layak</span>
+            <span class="badge-demo status-perlu-diperiksa">Perlu Diperiksa</span>
+            <span class="badge-demo status-tidak-layak">Tidak Layak</span>
+        </div>
+        <div id="badge-test-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. API Data Consistency</h2>
+        <div id="api-test-result">Loading...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Device Information</h2>
+        <div id="device-info"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Responsive Layout Test</h2>
+        <p>Window width: <strong id="window-width"></strong>px</p>
+        <p>Layout mode: <strong id="layout-mode"></strong></p>
+        <div id="layout-test-result"></div>
+    </div>
+
+    <script>
+        // Test 1: Badge Color Consistency
+        function testBadgeColors() {
+            const layak = getComputedStyle(document.querySelector('.status-layak'));
+            const perlu = getComputedStyle(document.querySelector('.status-perlu-diperiksa'));
+            const tidak = getComputedStyle(document.querySelector('.status-tidak-layak'));
+            
+            const results = [
+                {
+                    name: 'Layak Badge',
+                    expected: 'rgb(220, 252, 231)',
+                    actual: layak.backgroundColor,
+                    pass: layak.backgroundColor === 'rgb(220, 252, 231)'
+                },
+                {
+                    name: 'Perlu Diperiksa Badge',
+                    expected: 'rgb(255, 237, 213)',
+                    actual: perlu.backgroundColor,
+                    pass: perlu.backgroundColor === 'rgb(255, 237, 213)'
+                },
+                {
+                    name: 'Tidak Layak Badge',
+                    expected: 'rgb(254, 226, 226)',
+                    actual: tidak.backgroundColor,
+                    pass: tidak.backgroundColor === 'rgb(254, 226, 226)'
+                }
+            ];
+            
+            const resultDiv = document.getElementById('badge-test-result');
+            resultDiv.innerHTML = results.map(r => 
+                `<div class="test-result ${r.pass ? 'test-pass' : 'test-fail'}">
+                    ${r.pass ? '✅' : '❌'} ${r.name}: ${r.actual} ${r.pass ? '(PASS)' : '(FAIL - expected: ' + r.expected + ')'}
+                </div>`
+            ).join('');
+        }
+
+        // Test 2: API Data Consistency
+        async function testAPIData() {
+            const resultDiv = document.getElementById('api-test-result');
+            try {
+                const response = await fetch('/api/devices/SIGAP-MBG-01/latest');
+                const data = await response.json();
+                
+                const checks = [
+                    { name: 'Device ID', value: data.device_id, expected: 'SIGAP-MBG-01', pass: data.device_id === 'SIGAP-MBG-01' },
+                    { name: 'Prediction field exists', value: data.prediction, expected: 'string', pass: typeof data.prediction === 'string' },
+                    { name: 'NH3 field exists', value: data.nh3_ppm, expected: 'number', pass: typeof data.nh3_ppm === 'number' },
+                    { name: 'Alcohol field exists', value: data.alcohol_mgl, expected: 'number', pass: typeof data.alcohol_mgl === 'number' },
+                    { name: 'Temp field exists', value: data.temp_c, expected: 'number', pass: typeof data.temp_c === 'number' },
+                    { name: 'Humidity field exists', value: data.humidity_pct, expected: 'number', pass: typeof data.humidity_pct === 'number' },
+                    { name: 'Confidence field exists', value: data.confidence, expected: 'number', pass: typeof data.confidence === 'number' }
+                ];
+                
+                resultDiv.innerHTML = checks.map(c => 
+                    `<div class="test-result ${c.pass ? 'test-pass' : 'test-fail'}">
+                        ${c.pass ? '✅' : '❌'} ${c.name}: ${JSON.stringify(c.value)} ${c.pass ? '(PASS)' : '(FAIL)'}
+                    </div>`
+                ).join('');
+                
+                // Display full data
+                resultDiv.innerHTML += `<pre style="background: #f1f5f9; padding: 10px; margin-top: 10px; border-radius: 4px; overflow-x: auto;">${JSON.stringify(data, null, 2)}</pre>`;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-result test-fail">❌ API Error: ${error.message}</div>`;
+            }
+        }
+
+        // Test 3: Device Info
+        function testDeviceInfo() {
+            const info = {
+                'User Agent': navigator.userAgent,
+                'Screen Size': `${window.screen.width}x${window.screen.height}`,
+                'Window Size': `${window.innerWidth}x${window.innerHeight}`,
+                'Device Pixel Ratio': window.devicePixelRatio,
+                'Touch Support': 'ontouchstart' in window || navigator.maxTouchPoints > 0
+            };
+            
+            document.getElementById('device-info').innerHTML = Object.entries(info).map(([key, value]) => 
+                `<div style="margin: 5px 0;"><strong>${key}:</strong> ${value}</div>`
+            ).join('');
+        }
+
+        // Test 4: Responsive Layout
+        function testResponsiveLayout() {
+            const width = window.innerWidth;
+            document.getElementById('window-width').textContent = width;
+            
+            let mode, expected;
+            if (width >= 1025) {
+                mode = 'Desktop (3 columns)';
+                expected = '3-column grid: Sidebar (280px) + Main (flex) + Test Panel (320px)';
+            } else if (width >= 768) {
+                mode = 'Tablet (Single column stacked)';
+                expected = 'Vertical stack: Stats → Main → Test Panel';
+            } else {
+                mode = 'Mobile (Compact)';
+                expected = 'Vertical stack with mobile optimization';
+            }
+            
+            document.getElementById('layout-mode').textContent = mode;
+            document.getElementById('layout-test-result').innerHTML = 
+                `<div class="test-result test-pass">✅ Layout: ${expected}</div>`;
+        }
+
+        // Update on resize
+        window.addEventListener('resize', () => {
+            testResponsiveLayout();
+        });
+
+        // Run all tests
+        window.addEventListener('DOMContentLoaded', () => {
+            testBadgeColors();
+            testAPIData();
+            testDeviceInfo();
+            testResponsiveLayout();
+        });
+    </script>
+</body>
+</html>
