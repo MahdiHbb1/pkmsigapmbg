@@ -78,3 +78,8 @@ test-payload*.json
 
 # Private team documents
 EMAIL_KETUA_TIM.md
+*KETUA_TIM*
+*ketua_tim*
+
+# Compiled test binaries (build artifacts - rebuild locally)
+*.exe
