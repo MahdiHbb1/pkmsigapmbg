@@ -12,6 +12,7 @@ package-lock.json
 !.env.example
 
 # Firmware secrets
+firmware/esp32/include/secrets.h
 firmware/esp32/secrets.h
 
 # Python
