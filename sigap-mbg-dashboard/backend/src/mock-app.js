@@ -61,11 +61,31 @@ app.post('/api/readings', (req, res) => {
       });
     }
 
+    // Normalize timestamp (accept ISO string OR numeric unix time from ESP32).
+    // ESP32 sends millis()/1000 (seconds since boot); values resolving before
+    // 2020-01-01 fall back to server receipt time so charts stay sensible.
+    let normalizedTimestamp;
+    if (typeof timestamp === 'number') {
+      const ms = timestamp < 1e12 ? timestamp * 1000 : timestamp;
+      const parsed = new Date(ms);
+      normalizedTimestamp = isNaN(parsed.getTime()) || parsed.getTime() < Date.UTC(2020, 0, 1)
+        ? new Date().toISOString()
+        : parsed.toISOString();
+    } else {
+      const parsed = new Date(timestamp);
+      if (isNaN(parsed.getTime())) {
+        return res.status(400).json({
+          error: 'Invalid timestamp format. Use ISO 8601 (e.g., 2026-09-19T10:15:00Z)'
+        });
+      }
+      normalizedTimestamp = parsed.toISOString();
+    }
+
     // Store reading
     const reading = {
       id: readingIdCounter++,
       device_id,
-      reading_timestamp: timestamp,
+      reading_timestamp: normalizedTimestamp,
       mq135_mean, mq135_std, mq135_slope,
       mq136_mean, mq136_std, mq136_slope,
       temp_mean, humidity_mean,
@@ -82,7 +102,7 @@ app.post('/api/readings', (req, res) => {
       devices[deviceIndex] = {
         device_id,
         location_name: devices[deviceIndex].location_name,
-        reading_timestamp: timestamp,
+        reading_timestamp: normalizedTimestamp,
         prediction,
         confidence,
         temp_mean,
@@ -92,7 +112,7 @@ app.post('/api/readings', (req, res) => {
       devices.push({
         device_id,
         location_name: null,
-        reading_timestamp: timestamp,
+        reading_timestamp: normalizedTimestamp,
         prediction,
         confidence,
         temp_mean,

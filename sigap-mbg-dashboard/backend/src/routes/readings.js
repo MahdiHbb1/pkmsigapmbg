@@ -45,12 +45,23 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // Parse timestamp
-    const reading_timestamp = new Date(timestamp);
-    if (isNaN(reading_timestamp.getTime())) {
-      return res.status(400).json({ 
-        error: 'Invalid timestamp format. Use ISO 8601 (e.g., 2026-09-19T10:15:00Z)' 
-      });
+    // Parse timestamp (accept ISO 8601 string OR numeric unix time from ESP32).
+    // ESP32 sends millis()/1000 (seconds since boot, not wall-clock), so any
+    // numeric value resolving before 2020-01-01 falls back to server receipt time.
+    let reading_timestamp;
+    if (typeof timestamp === 'number') {
+      const ms = timestamp < 1e12 ? timestamp * 1000 : timestamp;
+      const parsed = new Date(ms);
+      reading_timestamp = isNaN(parsed.getTime()) || parsed.getTime() < Date.UTC(2020, 0, 1)
+        ? new Date()
+        : parsed;
+    } else {
+      reading_timestamp = new Date(timestamp);
+      if (isNaN(reading_timestamp.getTime())) {
+        return res.status(400).json({
+          error: 'Invalid timestamp format. Use ISO 8601 (e.g., 2026-09-19T10:15:00Z)'
+        });
+      }
     }
 
     // Auto-create device if not exists

@@ -20,8 +20,8 @@
 const char* WIFI_SSID = "YOUR_WIFI_SSID";
 const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
 
-// Server endpoint
-const char* SERVER_URL = "http://your-server.com/api/sensor-data";
+// Server endpoint (must match backend route POST /api/readings)
+const char* SERVER_URL = "http://your-server.com/api/readings";
 
 // Device ID
 const char* DEVICE_ID = "SIGAP-MBG-01";
