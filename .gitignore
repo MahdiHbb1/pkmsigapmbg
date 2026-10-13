@@ -75,3 +75,6 @@ test-payload*.json
 # OpenCode IDE (local project settings)
 .opencode/
 .specify/
+
+# Private team documents
+EMAIL_KETUA_TIM.md
