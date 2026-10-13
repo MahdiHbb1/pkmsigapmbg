@@ -342,7 +342,7 @@ Error: listen EADDRINUSE :::3000
 
 ## License
 
-PKM-KC SIGAP MBG 2026 - Universitas Brawijaya
+PKM-KC SIGAP MBG 2026 - Universitas Negeri Semarang
 
 ## Contact
 

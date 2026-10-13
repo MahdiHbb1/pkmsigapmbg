@@ -8,7 +8,12 @@ package-lock.json
 # Environment variables
 .env
 .env.*
+*.env
 !.env.example
+
+# Firmware secrets
+firmware/esp32/include/secrets.h
+firmware/esp32/secrets.h
 
 # Python
 __pycache__/
@@ -21,6 +26,10 @@ venv/
 ENV/
 env/
 .ipynb_checkpoints/
+*.egg-info/
+.pytest_cache/
+dist/
+build/
 
 # IDE
 .vscode/
@@ -56,3 +65,21 @@ backup/
 tmp/
 temp/
 *.tmp
+temp_*
+test-payload*.json
+
+# Test files
+*.test.log
+*_test.log
+
+# OpenCode IDE (local project settings)
+.opencode/
+.specify/
+
+# Private team documents
+EMAIL_KETUA_TIM.md
+*KETUA_TIM*
+*ketua_tim*
+
+# Compiled test binaries (build artifacts - rebuild locally)
+*.exe

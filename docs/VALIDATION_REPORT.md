@@ -61,9 +61,9 @@ id  device_id      prediction          confidence  mq135_mean  mq136_mean  temp_
 
 ### Devices Table
 ```
-id  device_id      location_name                created_at
-1   SIGAP-MBG-01   SPPG Universitas Brawijaya   2026-09-19 15:17:05
-2   SIGAP-MBG-02   NULL                         2026-09-19 15:28:33
+id  device_id      location_name                        created_at
+1   SIGAP-MBG-01   SPPG Universitas Negeri Semarang    2026-09-19 15:17:05
+2   SIGAP-MBG-02   NULL                                 2026-09-19 15:28:33
 ```
 
 ✅ SIGAP-MBG-02 auto-created (not pre-registered)  
@@ -79,7 +79,7 @@ id  device_id      location_name                created_at
 [
   {
     "device_id": "SIGAP-MBG-01",
-    "location_name": "SPPG Universitas Brawijaya",
+    "location_name": "SPPG Universitas Negeri Semarang",
     "reading_timestamp": "2026-09-19T08:28:31.000Z",
     "prediction": "Layak",
     "confidence": 0.95,

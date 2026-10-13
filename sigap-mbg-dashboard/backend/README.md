@@ -101,7 +101,7 @@ List all devices with latest status.
 [
   {
     "device_id": "SIGAP-MBG-01",
-    "location_name": "SPPG Universitas Brawijaya",
+    "location_name": "SPPG Universitas Negeri Semarang",
     "reading_timestamp": "2026-09-19T10:15:00Z",
     "prediction": "Layak",
     "confidence": 0.95,
